@@ -146,7 +146,7 @@ const char* const E_GL_EXT_device_group                 = "GL_EXT_device_group";
 const char* const E_GL_EXT_multiview                    = "GL_EXT_multiview";
 const char* const E_GL_EXT_post_depth_coverage          = "GL_EXT_post_depth_coverage";
 
-// Arrays of extensions for the above viewportEXTs duplications
+// Arrays of extensions for the above post depth-coverage duplications
 
 const char* const post_depth_coverageEXTs[] = { E_GL_ARB_post_depth_coverage, E_GL_EXT_post_depth_coverage };
 const int Num_post_depth_coverageEXTs = sizeof(post_depth_coverageEXTs) / sizeof(post_depth_coverageEXTs[0]);

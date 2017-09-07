@@ -3560,17 +3560,17 @@ void TBuiltIns::initialize(int version, EProfile profile, const SpvVersion& spvV
 
         if (profile == ECompatibilityProfile && version < 400)
             stageBuiltins[EShLangGeometry].append(
-            "out vec4 gl_ClipVertex;"
+                "out vec4 gl_ClipVertex;"
             );
 
         if (version >= 400)
             stageBuiltins[EShLangGeometry].append(
-            "in int gl_InvocationID;"
+                "in int gl_InvocationID;"
             );
         // GL_ARB_viewport_array
         if (version >= 150)
             stageBuiltins[EShLangGeometry].append(
-            "out int gl_ViewportIndex;"
+                "out int gl_ViewportIndex;"
             );
 
 #ifdef NV_EXTENSIONS
@@ -3648,8 +3648,6 @@ void TBuiltIns::initialize(int version, EProfile profile, const SpvVersion& spvV
             stageBuiltins[EShLangTessControl].append(
                 "float gl_CullDistance[];"
 #ifdef NV_EXTENSIONS
-                "int  gl_ViewportIndex;"
-                "int  gl_Layer;"
                 "int  gl_ViewportMask[];"             // GL_NV_viewport_array2
                 "vec4 gl_SecondaryPositionNV;"        // GL_NV_stereo_view_rendering
                 "int  gl_SecondaryViewportMaskNV[];"  // GL_NV_stereo_view_rendering
@@ -3660,6 +3658,10 @@ void TBuiltIns::initialize(int version, EProfile profile, const SpvVersion& spvV
         stageBuiltins[EShLangTessControl].append(
             "} gl_out[];"
 
+#ifdef NV_EXTENSIONS
+            "int  gl_ViewportIndex;"
+            "int  gl_Layer;"
+#endif
             "patch out float gl_TessLevelOuter[4];"
             "patch out float gl_TessLevelInner[2];"
             "\n");
@@ -5470,13 +5472,16 @@ void TBuiltIns::identifyBuiltIns(int version, EProfile profile, const SpvVersion
         BuiltInVariable("gl_Layer",           EbvLayer,          symbolTable);
         BuiltInVariable("gl_ViewportIndex",   EbvViewportIndex,  symbolTable);
 
+        if (version < 410 && language == EShLangGeometry)
+            symbolTable.setVariableExtensions("gl_ViewportIndex", 1, &E_GL_ARB_viewport_array);
+
 #ifdef NV_EXTENSIONS
         if (language != EShLangGeometry) {
             symbolTable.setVariableExtensions("gl_Layer",         Num_viewportEXTs, viewportEXTs);
             symbolTable.setVariableExtensions("gl_ViewportIndex", Num_viewportEXTs, viewportEXTs);
         }
 #else
-        if (language == EShLangVertex || language == EShLangTessEvaluation) {
+        if (language != EShLangGeometry) {
             symbolTable.setVariableExtensions("gl_Layer",         1, &E_GL_ARB_shader_viewport_layer_array);
             symbolTable.setVariableExtensions("gl_ViewportIndex", 1, &E_GL_ARB_shader_viewport_layer_array);
         }
@@ -5499,8 +5504,6 @@ void TBuiltIns::identifyBuiltIns(int version, EProfile profile, const SpvVersion
             BuiltInVariable("gl_in", "gl_SecondaryPositionNV", EbvSecondaryPositionNV, symbolTable);
             BuiltInVariable("gl_in", "gl_PositionPerViewNV",   EbvPositionPerViewNV,   symbolTable);
         }
-        BuiltInVariable("gl_out", "gl_Layer",                   EbvLayer,                   symbolTable);
-        BuiltInVariable("gl_out", "gl_ViewportIndex",           EbvViewportIndex,           symbolTable);
         BuiltInVariable("gl_out", "gl_ViewportMask",            EbvViewportMaskNV,          symbolTable);
         BuiltInVariable("gl_out", "gl_SecondaryPositionNV",     EbvSecondaryPositionNV,     symbolTable);
         BuiltInVariable("gl_out", "gl_SecondaryViewportMaskNV", EbvSecondaryViewportMaskNV, symbolTable);
@@ -5512,9 +5515,6 @@ void TBuiltIns::identifyBuiltIns(int version, EProfile profile, const SpvVersion
         BuiltInVariable("gl_TessLevelOuter",  EbvTessLevelOuter, symbolTable);
         BuiltInVariable("gl_TessLevelInner",  EbvTessLevelInner, symbolTable);
         BuiltInVariable("gl_TessCoord",       EbvTessCoord,      symbolTable);
-
-        if (version < 410)
-            symbolTable.setVariableExtensions("gl_ViewportIndex", 1, &E_GL_ARB_viewport_array);
 
         // Compatibility variables
 

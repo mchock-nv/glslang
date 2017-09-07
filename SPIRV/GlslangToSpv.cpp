@@ -453,15 +453,13 @@ spv::BuiltIn TGlslangToSpvTraverser::TranslateBuiltInDecoration(glslang::TBuiltI
         return spv::BuiltInCullDistance;
 
     case glslang::EbvViewportIndex:
-        if (!memberDeclaration) {
-            builder.addCapability(spv::CapabilityMultiViewport);
-            if (glslangIntermediate->getStage() == EShLangVertex ||
-                glslangIntermediate->getStage() == EShLangTessControl ||
-                glslangIntermediate->getStage() == EShLangTessEvaluation) {
+        builder.addCapability(spv::CapabilityMultiViewport);
+        if (glslangIntermediate->getStage() == EShLangVertex ||
+            glslangIntermediate->getStage() == EShLangTessControl ||
+            glslangIntermediate->getStage() == EShLangTessEvaluation) {
 
-                builder.addExtension(spv::E_SPV_EXT_shader_viewport_index_layer);
-                builder.addCapability(spv::CapabilityShaderViewportIndexLayerEXT);
-            }
+            builder.addExtension(spv::E_SPV_EXT_shader_viewport_index_layer);
+            builder.addCapability(spv::CapabilityShaderViewportIndexLayerEXT);
         }
         return spv::BuiltInViewportIndex;
 
@@ -478,17 +476,14 @@ spv::BuiltIn TGlslangToSpvTraverser::TranslateBuiltInDecoration(glslang::TBuiltI
         return spv::BuiltInSampleMask;
 
     case glslang::EbvLayer:
-        if (!memberDeclaration) {
-            builder.addCapability(spv::CapabilityGeometry);
-            if (glslangIntermediate->getStage() == EShLangVertex ||
-                glslangIntermediate->getStage() == EShLangTessControl ||
-                glslangIntermediate->getStage() == EShLangTessEvaluation) {
+        builder.addCapability(spv::CapabilityGeometry);
+        if (glslangIntermediate->getStage() == EShLangVertex ||
+            glslangIntermediate->getStage() == EShLangTessControl ||
+            glslangIntermediate->getStage() == EShLangTessEvaluation) {
 
-                builder.addExtension(spv::E_SPV_EXT_shader_viewport_index_layer);
-                builder.addCapability(spv::CapabilityShaderViewportIndexLayerEXT);
-            }
+            builder.addExtension(spv::E_SPV_EXT_shader_viewport_index_layer);
+            builder.addCapability(spv::CapabilityShaderViewportIndexLayerEXT);
         }
-
         return spv::BuiltInLayer;
 
     case glslang::EbvPosition:             return spv::BuiltInPosition;
@@ -2936,8 +2931,6 @@ void TGlslangToSpvTraverser::declareUseOfStructMember(const glslang::TTypeList& 
     case glslang::EbvCullDistance:
     case glslang::EbvPointSize:
 #ifdef NV_EXTENSIONS
-    case glslang::EbvLayer:
-    case glslang::EbvViewportIndex:
     case glslang::EbvViewportMaskNV:
     case glslang::EbvSecondaryPositionNV:
     case glslang::EbvSecondaryViewportMaskNV:
