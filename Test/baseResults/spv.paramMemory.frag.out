@@ -58,7 +58,7 @@ spv.paramMemory.frag
                3:             TypeFunction 2
                6:             TypeFloat 32
                7:             TypeImage 6(float) 2D nonsampled format:Unknown
-               8:             TypePointer UniformConstant 7
+               8:             TypePointer Function 7
                9:             TypeInt 32 1
               10:             TypeVector 9(int) 2
               11:             TypePointer Function 10(ivec2)

@@ -14,7 +14,7 @@ spv.atomic.comp
                               Name 10  "func(au1;"
                               Name 9  "c"
                               Name 12  "atoms("
-                              Name 20  "counter"
+                              Name 21  "counter"
                               Name 23  "val"
                               Name 27  "countArr"
                               Name 35  "origi"
@@ -29,8 +29,8 @@ spv.atomic.comp
                               Name 70  "arrX"
                               Name 71  "arrY"
                               Name 72  "arrZ"
-                              Decorate 20(counter) Offset 0
-                              Decorate 20(counter) Binding 0
+                              Decorate 21(counter) Offset 0
+                              Decorate 21(counter) Binding 0
                               Decorate 27(countArr) Offset 4
                               Decorate 27(countArr) Binding 0
                               MemberDecorate 60(dataSSB) 0 Restrict
@@ -43,13 +43,13 @@ spv.atomic.comp
                2:             TypeVoid
                3:             TypeFunction 2
                6:             TypeInt 32 0
-               7:             TypePointer AtomicCounter 6(int)
+               7:             TypePointer Function 6(int)
                8:             TypeFunction 6(int) 7(ptr)
               14:      6(int) Constant 1
               15:      6(int) Constant 0
               19:      6(int) Constant 1024
-     20(counter):      7(ptr) Variable AtomicCounter
-              22:             TypePointer Function 6(int)
+              20:             TypePointer AtomicCounter 6(int)
+     21(counter):     20(ptr) Variable AtomicCounter
               24:      6(int) Constant 4
               25:             TypeArray 6(int) 24
               26:             TypePointer AtomicCounter 25
@@ -81,14 +81,14 @@ spv.atomic.comp
         72(arrZ):     69(ptr) Variable Private
          4(main):           2 Function None 3
                5:             Label
-         23(val):     22(ptr) Variable Function
+         23(val):      7(ptr) Variable Function
                               MemoryBarrier 14 19
-              21:      6(int) FunctionCall 10(func(au1;) 20(counter)
-              30:      7(ptr) AccessChain 27(countArr) 29
+              22:      6(int) FunctionCall 10(func(au1;) 21(counter)
+              30:     20(ptr) AccessChain 27(countArr) 29
               31:      6(int) AtomicLoad 30 14 15
                               Store 23(val) 31
-              32:      6(int) AtomicIDecrement 20(counter) 14 15
-              33:      6(int) AtomicIIncrement 20(counter) 14 15
+              32:      6(int) AtomicIDecrement 21(counter) 14 15
+              33:      6(int) AtomicIIncrement 21(counter) 14 15
                               Return
                               FunctionEnd
    10(func(au1;):      6(int) Function None 8
@@ -100,7 +100,7 @@ spv.atomic.comp
       12(atoms():           2 Function None 3
               13:             Label
        35(origi):     34(ptr) Variable Function
-       40(origu):     22(ptr) Variable Function
+       40(origu):      7(ptr) Variable Function
               39:     28(int) AtomicIAdd 37(atomi) 14 15 38
                               Store 35(origi) 39
               44:      6(int) Load 43(value)
